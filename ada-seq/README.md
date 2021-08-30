@@ -1,4 +1,4 @@
-## Workflow 1.
+## Workflow-1
 #### PrinSEQ.
 - Filter minimum Phred score 25
 
