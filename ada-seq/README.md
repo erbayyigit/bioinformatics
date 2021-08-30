@@ -1,5 +1,6 @@
+## Workflow 1.
 #### PrinSEQ.
-Filter minimum Phred score 25
+- Filter minimum Phred score 25
 
 #### SeqPrep Trimmer
 - minimum length 20 nt
