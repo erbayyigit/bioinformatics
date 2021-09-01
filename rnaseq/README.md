@@ -1,7 +1,4 @@
-### Adapter Trimming with Seqprep 
-Use Seqprep for trimming and resync. After Seqprep, resync is not necessary.  
-->Merge overlapping reads and output merged reads? NO. 
-
+### Sequencer for Adapter Trimmers 
 R1 adapter to trim NEBNext sRNA or Truseq:  
 AGATCGGAAGAGCACAC
 
