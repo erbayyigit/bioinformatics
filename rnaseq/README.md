@@ -10,4 +10,4 @@ GATCGTCGGACTGTAGAACTC
 Feed the above sequences to a trimmer. You can use the test files to test your entries since it contains a read pair with adapter contamination in both R1 and R2.
 
 ##  TOOL NOTES
-Do not use **"cutadapt"** seem to be corrupting fastq. I got 5 lines records. Ther is chance it might be seqtk but. Needs to be tested.
+Do not use ```cutadapt``` seem to be corrupting fastq. I got 5 lines records. Ther is chance it might be seqtk or sth unrelated. Needs to be tested. Also ```cutadapt``` is not recommneded by experts --too slow and not high fidelity enough.
