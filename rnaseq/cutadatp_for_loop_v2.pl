@@ -1,3 +1,5 @@
+# do not use this cutadapter adapter trimmer. Not recommended by many-people. Use fastp instead.
+
 #!/usr/bin/perl
 use 5.20.0;
 use warnings;
