@@ -1,14 +1,16 @@
 # ANALYSIS
-#### 1. Downsample
+
+####  Leading and Trailing base removal such as random hexamers
+Use ```Flexbar``` on Galaxy
+####  Downsample
 Using ```seqkit sample```
-#### 2. Adapter trim
+####  Adapter trim
 Using ```fastp -i hek_RAND_60m.R1.fastq.gz -o clean_hek_RAND.R1.fastq.gz \
 -I hek_RAND_60m.R2.fastq.gz -O clean_hek_RAND.R2.fastq.gz --length_required=20 \
 --adapter_sequence=AGATCGGAAGAGCACAC \
 --adapter_sequence_r2=GATCGTCGGACTGTAGA 2> reportRAND.txt ``` 
 small RNA adapters
-#### 3. Leading and Trailing base removal such as random hexamers
-Use ```Flexbar``` on Galaxy
+
 
 
 ### Sequences for Adapter Trimmers 
