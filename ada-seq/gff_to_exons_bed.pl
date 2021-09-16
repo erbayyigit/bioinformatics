@@ -4,8 +4,12 @@ use warnings;
 # Erbay Yigit, yigit@neb.com
 # Script: Exons start end BED file
 # Input file is a GFF file with exons
+
+
 while(<DATA>){
+	next if /^#/;
 	my $line = $_;
+	chomp $line;
 	my($chr, $strand, $eStart, $eEnd, $gene)=(split /\s+/, $line)[0,1,5,6,7];
 	my @starts = split /,/, $eStart;
 	my @ends = split /,/, $eEnd;
@@ -14,8 +18,9 @@ while(<DATA>){
 		say "$chr\t$pair\t$gene";
 	}
 }
-#chrom	strand	txStart	txEnd	exonCount	exonStarts	exonEnds	name2
+
 __DATA__
+#chrom	strand	txStart	txEnd	exonCount	exonStarts	exonEnds	name2
 chr11	-	1584341	1585283	1	1584341,	1585283,	KRTAP5-1
 chr11	-	1597176	1598294	1	1597176,	1598294,	KRTAP5-2
 chr11	-	1607564	1608463	1	1607564,	1608463,	KRTAP5-3
