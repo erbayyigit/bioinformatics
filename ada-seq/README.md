@@ -14,3 +14,4 @@
 
 ## Workflow -2
 Download GFF file with exons \
+Convert GFF file to exons.bed file using `gff_to_exons_bed.pl` script.
