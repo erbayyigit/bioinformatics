@@ -12,3 +12,5 @@
 #### FastQC Run
 - Remove eyr354/355 spike-in contaminants
 
+## Workflow -2
+Download GFF file with exons \
