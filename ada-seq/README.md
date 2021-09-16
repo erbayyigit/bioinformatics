@@ -16,5 +16,4 @@
 Download GFF file with exons \
 Convert GFF file to exons.bed file using `gff_to_exons_bed.pl` script. \
 Reduce exons using bedtools mergery groupBy. See examples folder. \
-`groupBy -i bedtools_merge_byGroup_test_Input.bed -g 1,4 -c 4,2,3 -o count,min,max \
-|awk -v OFS="\t" '{print $1,$4,$5,$2}'`
+`groupBy -i bedtools_merge_byGroup_test_Input.bed -g 1,4 -c 4,2,3 -o count,min,max |awk -v OFS="\t" '{print $1,$4,$5,$2}'`
