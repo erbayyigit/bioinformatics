@@ -5,6 +5,8 @@ use warnings;
 # calculate total exon lenght sby gen symbol
 # you can use this length to dived coverage
 # Note if there same genee in multiple chromsomes, script does not consider it (yet)
+# sort output file as "sort -k1 > exons_lengths_per_gene.tab"
+
 my %hash;
 while(<>){
     chomp(my $line = $_);
