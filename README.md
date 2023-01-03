@@ -19,6 +19,7 @@ igv
 illuminate   
 mira   
 qiime   
+SeqKit - Ultrafast FASTA/Q kit.  
 sratoolkit.2.11.3-mac64   
 subread-2.0.3/   
 tagdust-2.31   
