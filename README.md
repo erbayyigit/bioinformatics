@@ -1,5 +1,5 @@
-# bioinformatics
-Bioinformatics Scripts for Personal Use
+# Erbay's bioinformatics tools
+Bioinformatics Tools I often Use
 
 #Useful Bionformatics Applications
 Trimmomatic  
