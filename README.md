@@ -1,7 +1,7 @@
 # Erbay's to go bioinformatics tools
 
 Trimmomatic  
-art_bin_GreatSmokyMountains  
+art_bin_GreatSmokyMountains: ART is a set of simulation tools to generate synthetic next-generation sequencing reads.  
 bamtools   
 bbmap   
 bedtools   
