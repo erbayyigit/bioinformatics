@@ -2,9 +2,9 @@
 Bioinformatics Scripts for Personal Use
 
 #Useful Bionformatics Applications
-Trimmomatic
-art_bin_GreatSmokyMountains
-bamtools
+Trimmomatic 
+art_bin_GreatSmokyMountains 
+bamtools 
 bbmap
 bedtools
 blat
