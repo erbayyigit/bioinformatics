@@ -1,7 +1,5 @@
-# Erbay's bioinformatics tools
-Bioinformatics Tools I often Use
+# Erbay's to go bioinformatics tools
 
-#Useful Bionformatics Applications
 Trimmomatic  
 art_bin_GreatSmokyMountains  
 bamtools   
