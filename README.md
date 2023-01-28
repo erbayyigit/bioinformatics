@@ -9,8 +9,7 @@ blat
 cgmaptools   
 circos-master   
 deepTools   
-edirect   
-edittag   
+edirect     
 gffread-0.12.7.OSX_x86_64   
 homer   
 igv   
