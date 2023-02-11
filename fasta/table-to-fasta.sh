@@ -7,3 +7,5 @@ awk -F"," '{print ">"$1"\n"$2}' file.csv > outputFile.fasta
 #output format
 #>seqID
 #AGTCG...
+
+
