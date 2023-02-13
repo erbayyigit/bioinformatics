@@ -11,5 +11,10 @@ with open(input_file, 'r') as in_handle, open(output_file, 'w') as out_handle:
         sequence = str(seq_record.seq)
         trimmed_sequence = sequence[15:-15] #manupulate sequence
         modified_record= SeqRecord.SeqRecord(id=seq_record.id, \
-            seq=Seq.Seq(trimmed_sequence), description='description')
+            seq=Seq.Seq(trimmed_sequence),
+            name= seq_record.name, 
+            description=seq_record.description)
         SeqIO.write(modified_record, out_handle, "fasta")
+
+print(dir(seq_record))
+
