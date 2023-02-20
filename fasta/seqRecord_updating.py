@@ -6,15 +6,15 @@ from Bio import Seq, SeqIO, SeqRecord
 input_file   = 'input.fasta'
 output_file  = 'output.fasta'
 
-with open(input_file, 'r') as in_handle, open(output_file, 'w') as out_handle:
-    for seq_record in SeqIO.parse(input_file, "fasta"):
+with open(input_file, 'r') as in_fh, open(output_file, 'w') as out_fh:
+    for seq_record in SeqIO.parse(in_fh, "fasta"):
         sequence = str(seq_record.seq)
         trimmed_sequence = sequence[15:-15] #manupulate sequence
         modified_record= SeqRecord.SeqRecord(id=seq_record.id, \
             seq=Seq.Seq(trimmed_sequence),
             name= seq_record.name, 
             description=seq_record.description)
-        SeqIO.write(modified_record, out_handle, "fasta")
+        SeqIO.write(modified_record, out_fh, "fasta")
 
 print(dir(seq_record))
 
