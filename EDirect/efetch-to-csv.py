@@ -4,10 +4,8 @@
    prints annotation etc to CSV file
    or
    generates a FASTA file
-
    yigit@neb.com
 '''
-
 from Bio import Entrez, SeqIO
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
 import csv
@@ -20,7 +18,6 @@ with open('type3tas_accession_numbers.txt', 'r') as infile:
       temp_list.append(gb_id)
 
 list_of_WP_ids = set(temp_list)      
-
 
 Entrez.email = "erbayyigit@gmail.com"
 handle = Entrez.efetch(db="protein", rettype="gb",  retmode="text", id=list_of_WP_ids)
