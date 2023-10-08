@@ -1,5 +1,5 @@
 import os
-#wrie each record to a new field from a multirecord fasta file
+#write each record to a new file from a multirecord fasta file
 
 with open("input.fasta") as f:
 	for line in f:
