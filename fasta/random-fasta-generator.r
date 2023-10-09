@@ -1,4 +1,4 @@
-#library(seqinr)
+library(seqinr)
 Num_Sequences = 100
 #Num_Sequences = runif(1, min=2, max=10)
 #set.seed(1000) #This can be commented out for less definable patterns
