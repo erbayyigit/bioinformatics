@@ -1,4 +1,5 @@
 import argparse
+import os
 from Bio import SeqIO
 import Bio.Data.IUPACData as bdi
 from Bio.Seq import Seq
@@ -6,6 +7,7 @@ from Bio.SeqRecord import SeqRecord
 from Bio.SeqUtils import GC
 from fuzzysearch import find_near_matches
 from itertools import product
+
 '''
     yigit@neb.com
     Nov 5, 2023.
@@ -22,13 +24,26 @@ from itertools import product
         max_deletions =1, "delete" = skip a character in the sub-sequence
         max_insertions=1, maximum # of insertions ("insert" = skip a character in the sequence)
 
-
 '''
 
+fasta_file_name     = 'testinput.fasta' #input filename
+
+out_fasta_filename  = '_recoded.fasta'   #Give an output file name to stor Recoded FASTA file
+if not os.path.exists(out_fasta_filename):
+    outfasta = open(out_fasta_filename, 'w+')       
+else:
+    print('File already exists!')
+
+out_match_results   = '_match_results.txt'
+if not os.path.exists(out_match_results):
+    outmatch = open(out_match_results , 'w+')       
+else:
+    print('File already exists!')
+
+
 #fuzzy search parameter
-motif    = 'AAAAHAT' #motif
-fasta_file_name = 'testinput.fasta'
-max_l_dist_     = 1 #determines distance, 1 is single mismatch
+motif               = 'TACAAA'       #'AAAAHAT' #motif
+max_l_dist_     = 0 #determines distance, 1 is single mismatch
 max_deletions_  = 0
 max_insertions_ = 0
 
@@ -130,8 +145,11 @@ for seq_record in SeqIO.parse(fasta_file_name, "fasta"):
 record_list.append(seq_record) #add wt fasta record
 
 
-#fuzzy search script is below
+#generate output fasta file for writing, and write
+SeqIO.write(record_list, out_fasta_filename, "fasta")
 
+
+#fuzzy search script is below
 def extend_ambiguous_dna(seq):
    """return list of all possible sequences given an ambiguous DNA input"""
    d = bdi.ambiguous_dna_values
@@ -144,9 +162,12 @@ ambiguous_motif = extend_ambiguous_dna(motif)
 
 for record in record_list:
     name, sequence = record.id, str(record.seq)    
-    print("\n\n@Fasta Record:", name)
+    record_title =f"\n\n@Fasta Record: {name}\n" #################### double line break frist
+    print(record_title, end="")
+    outmatch.write(record_title)
+
     for subsequence in ambiguous_motif:
-        title=(f"\tAmbiguous {subsequence}:")
+        title=(f"\tAmbiguous {subsequence}:\n")
         
         matches = find_near_matches(subsequence, sequence, 
             max_l_dist     = max_l_dist_, 
@@ -154,12 +175,18 @@ for record in record_list:
             max_insertions = max_insertions_
         ) 
         
-        print(title)
+
+        print(title, end="")
+        outmatch.write(title)
 
         for item in matches:
-            print (f"\t\t{item}\t{len(record)}")
-
+            myline = (f"\t\t{item}\t{len(record)}\n") #prints to screen
+            print(myline, end="")
+            outmatch.write(myline)
     
+outmatch.close()
+
+
 
     #------------------------------------------------------------
 
