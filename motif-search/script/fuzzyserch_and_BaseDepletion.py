@@ -13,11 +13,14 @@ from itertools import product
     Nov 5, 2023.
     Credits: Recoding part of the program was written by Vladimir.
     USAGE:
+        
         ->This script will accept a FASTA file (can be multirecord) as an input. Use DNA bases ie 'T' instead of 'U'
-        ->It will recode each FASTA record sequence without changing amino acid sequence
+        ->It will recode each FASTA record sequence without changing amino acid sequence.The script will do A, C, T, G depletin; 
+            and these will be printed as separate FASTA record on a multipfasta file.
         ->It will search motif in these sequence (will accept 'ambiguous_dna_values" such ash AAAHAT)
         ->Fuzzy search will search the motif in each FASTA record.
-        -> Mismatch can be indicated at 'max_l_dist_'. Zero is perfect match.
+        ->Mismatch can be indicated at 'max_l_dist_'. Zero is perfect match.
+        
 
     REFERENCES:
         https://github.com/taleinat/fuzzysearch
