@@ -4,23 +4,20 @@ from Bio import SeqIO
 import Bio.Data.IUPACData as bdi
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.SeqUtils import GC
+from Bio.SeqUtils import gc_fraction
 from fuzzysearch import find_near_matches
 from itertools import product
 
 '''
     yigit@neb.com
-    Nov 5, 2023.
+    Nov 5, 2023. Updated on Oct 31, 2024
     Credits: Recoding part of the program was written by Vladimir.
     USAGE:
-        
         ->This script will accept a FASTA file (can be multirecord) as an input. Use DNA bases ie 'T' instead of 'U'
-        ->It will recode each FASTA record sequence without changing amino acid sequence.The script will do A, C, T, G depletin; 
-            and these will be printed as separate FASTA record on a multipfasta file.
+        ->It will recode each FASTA record sequence without changing amino acid sequence
         ->It will search motif in these sequence (will accept 'ambiguous_dna_values" such ash AAAHAT)
         ->Fuzzy search will search the motif in each FASTA record.
         ->Mismatch can be indicated at 'max_l_dist_'. Zero is perfect match.
-        
 
     REFERENCES:
         https://github.com/taleinat/fuzzysearch
@@ -28,31 +25,24 @@ from itertools import product
         max_insertions=1, maximum # of insertions ("insert" = skip a character in the sequence)
 
 '''
+fasta_file_name     = 'rna_or_ivt_template_references.fasta' #input filename
+out_fasta_filename  = f"_recoded_{fasta_file_name}"
+outfasta = open(out_fasta_filename, 'w+')       
 
-fasta_file_name     = 'testinput.fasta' #input filename
-
-out_fasta_filename  = '_recoded.fasta'   #Give an output file name to stor Recoded FASTA file
-if not os.path.exists(out_fasta_filename):
-    outfasta = open(out_fasta_filename, 'w+')       
-else:
-    print('File already exists!')
-
-out_match_results   = '_match_results.txt'
-if not os.path.exists(out_match_results):
-    outmatch = open(out_match_results , 'w+')       
-else:
-    print('File already exists!')
+inpu_file_basename = 'rna_or_ivt_template_references.fasta'.rstrip('.fasta') 
+out_match_results  = f"_match_results_{inpu_file_basename}.txt"
+outmatch = open(out_match_results , 'w+')       
 
 
 #fuzzy search parameter
-motif               = 'TACAAA'       #'AAAAHAT' #motif
+motif           = 'GAAAT'       #'AAAAHAT' #motif
 max_l_dist_     = 0 #determines distance, 1 is single mismatch
 max_deletions_  = 0
 max_insertions_ = 0
 
 
 codon_table = { 
-    #thi is Ecoli codon table
+    #this is Ecoli codon table
     '*': {'TAA': 0.64, 'TAG': 0.07, 'TGA': 0.29},
     'A': {'GCA': 0.21, 'GCC': 0.27, 'GCG': 0.36, 'GCT': 0.16},
     'C': {'TGC': 0.56, 'TGT': 0.44},
@@ -79,8 +69,9 @@ codon_table = {
 wt_seqence = ''
 record_list = []
 
-
 for seq_record in SeqIO.parse(fasta_file_name, "fasta"):
+    record_list.append(seq_record) #add wt fasta record
+    
     sequence = str(seq_record.seq)
     for base in ['A', 'T', 'G', 'C']:
 
@@ -141,11 +132,13 @@ for seq_record in SeqIO.parse(fasta_file_name, "fasta"):
             # # uncomment this line if you'd like to see the decision table
             #print(i, codon, aa, codon_table[aa][codon], new_codon, count_t(new_codon), codon_table[aa][new_codon], sep='\t')
                 
-        #make a ndw SeqRecord to process with Biopython
-        new_bio_record = SeqRecord(Seq(recoded_seq),id=f"{seq_record.id}_{base}-depleted GC%: {round(GC(recoded_seq),2)}",  description="")
+        #make a new SeqRecord to process with Biopython
+        new_bio_record = SeqRecord(Seq(recoded_seq),
+            id=f"{seq_record.id}_{base}-depleted, GC%:{gc_fraction(recoded_seq):.2f}",  
+            description="")
         record_list.append(new_bio_record)
 
-record_list.append(seq_record) #add wt fasta record
+    
 
 
 #generate output fasta file for writing, and write
@@ -163,11 +156,18 @@ def extend_ambiguous_dna(seq):
 ambiguous_motif = extend_ambiguous_dna(motif)
 
 
-for record in record_list:
+for count, record in enumerate(record_list,1):
     name, sequence = record.id, str(record.seq)    
-    record_title =f"\n\n@Fasta Record: {name}\n" #################### double line break frist
-    print(record_title, end="")
-    outmatch.write(record_title)
+    record_title =f"Record: {name}\n" 
+    
+    #screen printing
+    print(count, record_title, end="")
+    if count % 5 == 0:
+        print("-----")
+
+    new_record_title = f"{count}.{record_title}"   
+    outmatch.write(new_record_title)    
+
 
     for subsequence in ambiguous_motif:
         title=(f"\tAmbiguous {subsequence}:\n")
@@ -179,14 +179,16 @@ for record in record_list:
         ) 
         
 
-        print(title, end="")
+        #print(title, end="")
         outmatch.write(title)
 
         for item in matches:
             myline = (f"\t\t{item}\t{len(record)}\n") #prints to screen
-            print(myline, end="")
+            #print(myline, end="")
             outmatch.write(myline)
-    
+        if count % 5 == 0:
+            outmatch.write("\n------------------\n\n")
+        
 outmatch.close()
 
 
