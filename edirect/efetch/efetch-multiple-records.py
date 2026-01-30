@@ -1,15 +1,20 @@
-import subprocess
+import os, subprocess, sys
 from datetime import datetime
-import sys
 
-# Get input file from command line (like the $1 in bash)
+
+# Get input file from command line
 input_file = sys.argv[1]
 
+# 1. Get just the filename (e.g., "input.txt" from "samples/input.txt")
+file_only = os.path.basename(input_file)
 
+# 2. Get the name without the extension (e.g., "input" from "input.txt")
+base_name = os.path.splitext(file_only)[0]
 # Create the timestamped filename
-timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-base_name = input_file.rsplit('.', 1)[0]
-output_file = f"results_{base_name}_{timestamp}.fasta"
+
+timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+
+output_file = f"result_{base_name}_{timestamp}.fasta"
 
 
 with open(input_file, 'r') as ids, open(output_file, 'w') as out:
@@ -26,40 +31,4 @@ with open(input_file, 'r') as ids, open(output_file, 'w') as out:
             out.write(result.stdout)
 
 print(f"Success! Saved to {output_file}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# #!/bin/bash
-
-# # $1 represents the first argument you type after the script name
-# INPUT_FILE=$1
-
-# # This creates a timestamp like 2026-01-29_16-20
-# TIMESTAMP=$(date +"%Y-%m-%d_%H-%M")
-
-# # This removes the extension from input and builds: results_filename_timestamp.fasta
-# BASE_NAME="${INPUT_FILE%.*}"
-# OUT_FILE="results_${BASE_NAME}_${TIMESTAMP}.fasta"
-
-# while read -r line <&3; do
-#     # It is good practice to echo the ID so you can see progress in the terminal
-#     echo "Fetching $line..."
-#     efetch -db protein -id "$line" -format fasta
-# done 3< "$INPUT_FILE" > "$OUT_FILE"
-
-# echo "Process complete. Output saved to: $OUT_FILE"
 
