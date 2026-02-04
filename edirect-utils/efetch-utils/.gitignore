@@ -1,0 +1,70 @@
+############################################
+# macOS (Finder / filesystem metadata)
+############################################
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Volumes / network shares
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.localized
+
+# SMB / AFP share artifacts (optional but useful)
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+############################################
+# Python (bytecode, caches, builds)
+############################################
+__pycache__/
+*.py[cod]
+*.pyd
+
+# Packaging / build outputs
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test / coverage artifacts (safe even if you don't use them yet)
+.pytest_cache/
+.coverage
+htmlcov/
+
+############################################
+# Virtual environments / local env files
+############################################
+.venv/
+venv/
+.env
+.env.*
+
+############################################
+# Logs / temporary files
+############################################
+*.log
+*.tmp
+*.swp
+
+############################################
+# Editors / IDEs
+############################################
+.vscode/
+.idea/
+.DS_Store
+
+############################################
+# Jupyter (only matters if you use notebooks)
+############################################
+.ipynb_checkpoints/
+
