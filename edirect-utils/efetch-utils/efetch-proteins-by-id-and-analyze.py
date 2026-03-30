@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import csv
 import sys
+import os
 import time
 from typing import Iterable, List, Sequence, Tuple
 
@@ -272,8 +273,19 @@ def write_fasta(
 def main(argv: Sequence[str]) -> int:
     args = parse_args(argv)
 
+
+    # Always write to the /output directory relative to this script
+    output_dir = os.path.join(os.path.dirname(__file__), "output")
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
     if args.output is None:
-        args.output = "results.csv" if args.format == "CSV" else "results.fasta"
+        base = "results.csv" if args.format == "CSV" else "results.fasta"
+    else:
+        base = os.path.basename(args.output)
+    name, ext = os.path.splitext(base)
+    out_filename = f"{name}_{timestamp}{ext}"
+    args.output = os.path.join(output_dir, out_filename)
 
     protein_ids = read_id_file(args.input)
     records = fetch_gb_records(

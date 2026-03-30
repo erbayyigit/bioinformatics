@@ -50,9 +50,12 @@ file_only = os.path.basename(input_file)
 base_name = os.path.splitext(file_only)[0]
 # Create the timestamped filename
 
-timestamp = datetime.now().strftime("%Y%m%d_%H%M")
 
-output_file = f"result_{base_name}_{timestamp}.fasta"
+timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+# Ensure output directory exists
+output_dir = os.path.join(os.path.dirname(__file__), "output")
+os.makedirs(output_dir, exist_ok=True)
+output_file = os.path.join(output_dir, f"result_{timestamp}.fasta")
 
 
 with open(input_file, 'r') as ids, open(output_file, 'w') as out:
