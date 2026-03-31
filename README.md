@@ -166,7 +166,11 @@ Each sequence retrieved is appended to the output file.
 
 ---
 
-## License
+## Legacy Scripts
 
-This project is open source.
+Older edirect utilities are available in the `edirect-utils/` directory:
+- `efetch-proteins-by-id.py` - Original NCBI protein fetcher
+- `efetch-proteins-by-id-and-analyze.py` - NCBI fetcher with protein analysis features
+
+These have been superseded by the modern scripts in the `scripts/` directory with improved error handling and user experience.
 
