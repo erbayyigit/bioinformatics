@@ -12,7 +12,7 @@ Features:
   - Works with both DNA and RNA FASTA files
 
 Usage:
-  python n_depleted_codon_optimization.py -i <input_file> -n <nucleotide>
+  python3 scripts/01_n_depleted_codon_optimization.py -n <nucleotide> [-i <input_file>]
 
 Arguments:
   -i, --input        Input FASTA file (DNA or RNA sequence) [REQUIRED]
@@ -20,9 +20,9 @@ Arguments:
                      (Case-insensitive: a, u, g, c also accepted)
 
 Examples:
-  python n_depleted_codon_optimization.py -i sequences.fasta -n u
-  python n_depleted_codon_optimization.py -i genes.fa -n G
-  python n_depleted_codon_optimization.py -i transcript.fasta -n A
+  python3 scripts/01_n_depleted_codon_optimization.py -n u
+  python3 scripts/01_n_depleted_codon_optimization.py -n G -i sample_data/01_n_depleted_codon_optimization_input.fasta
+  python3 scripts/01_n_depleted_codon_optimization.py -n A -i ./sample_data/01_n_depleted_codon_optimization_input.fasta
 
 Output:
   FASTA format with header containing:
@@ -32,17 +32,76 @@ Output:
 """
 
 import argparse
-from Bio import SeqIO
+from pathlib import Path
+
+try:
+    from Bio import SeqIO
+except Exception:
+    SeqIO = None
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DEFAULT_INPUT = ROOT_DIR / 'sample_data' / '01_n_depleted_codon_optimization_input.fasta'
+
+
+class FastARecord:
+    def __init__(self, record_id, sequence):
+        self.id = record_id
+        self.seq = sequence
+
+
+def read_fasta_records(file_path):
+    if SeqIO is not None:
+        try:
+            return list(SeqIO.parse(file_path, 'fasta'))
+        except Exception:
+            pass
+
+    records = []
+    current_id = None
+    current_seq = []
+
+    with open(file_path, 'r', encoding='utf-8') as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line.startswith('>'):
+                if current_id is not None:
+                    records.append(FastARecord(current_id, ''.join(current_seq)))
+                current_id = line[1:].split()[0]
+                current_seq = []
+            else:
+                current_seq.append(line)
+
+    if current_id is not None:
+        records.append(FastARecord(current_id, ''.join(current_seq)))
+
+    return records
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Optimize codons by depleting a specific nucleotide (RNA/U-based depletion)')
-parser.add_argument('-i', '--input', type=str, required=True,
-                    help='Input FASTA file (DNA or RNA sequence)')
+parser.add_argument('-i', '--input', type=str, default=str(DEFAULT_INPUT),
+                    help='Input FASTA file (DNA or RNA sequence). Defaults to sample_data/01_n_depleted_codon_optimization_input.fasta')
 parser.add_argument('-n', '--nucleotide', type=str.upper, choices=['A', 'C', 'G', 'U'], 
                     required=True, help='Nucleotide to deplete in RNA (A, C, G, or U). Required.')
 args = parser.parse_args()
-input_file = args.input
+
+input_arg = args.input
+input_path = Path(input_arg)
+if not input_path.is_absolute():
+    cwd_candidate = Path.cwd() / input_path
+    if cwd_candidate.exists():
+        input_file = str(cwd_candidate.resolve())
+    else:
+        input_file = str((ROOT_DIR / input_path).resolve())
+else:
+    input_file = str(input_path)
+
 target_nucleotide = args.nucleotide
+
+if not Path(input_file).exists():
+    print(f"[ERROR] Input FASTA file not found: {input_file}")
+    exit()
 
 # Helper functions to detect sequence type
 def is_dna(seq):
@@ -54,7 +113,7 @@ def is_rna(seq):
     return 'U' in seq and 'T' not in seq
 
 # Read the first sequence to determine file type
-records = list(SeqIO.parse(input_file, "fasta"))
+records = read_fasta_records(input_file)
 if not records:
     print("[ERROR] FASTA file is empty.")
     exit()
